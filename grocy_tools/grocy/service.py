@@ -1,5 +1,6 @@
 import base64
 from io import BytesIO
+from typing import Any, Generator, Iterator
 
 import httpx
 
@@ -9,8 +10,10 @@ from abc import ABCMeta
 from grocy_rest_api_client.api.files import put_files_group_file_name
 from grocy_rest_api_client.api.generic_entity_interactions import put_objects_entity_object_id
 from grocy_rest_api_client.api.stock import get_stock, get_stock_products_product_id
+from grocy_rest_api_client.api.generic_entity_interactions import get_objects_entity
 from grocy_rest_api_client.models import FileGroups, ExposedEntityNotIncludingNotEditable, Product, Error400, \
-    ProductDetailsResponse, CurrentStockResponse
+    ProductDetailsResponse, CurrentStockResponse, Battery, Chore, Location, ProductBarcode, QuantityUnit, \
+    ShoppingListItem, StockEntry, ExposedEntityNotIncludingNotListable
 from grocy_rest_api_client.types import File
 
 
@@ -61,3 +64,16 @@ class GrocyService(GrocyServiceInterface):
                 object_id=product_id
             )
         return status
+
+    def get_products(self) -> Iterator[Product]:
+        offset = 0
+        complete = False
+        while not complete:
+            res = get_objects_entity.sync(ExposedEntityNotIncludingNotListable.PRODUCTS, client=self.client, limit=100, offset=offset)
+            if isinstance(res, list) and len(res) > 0:
+                for item in res:
+                    if isinstance(item, Product):
+                        yield item
+                offset += 100
+            else:
+                complete = True

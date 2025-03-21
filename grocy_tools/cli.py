@@ -16,6 +16,6 @@ def main():
 def bulk_image(grocy_api_url: str, grocy_api_key: str):
     grocy_svc = GrocyService(grocy_api_url, grocy_api_key)
     off_svc = OpenFoodFactsService()
-    BulkImageImport(grocy_svc, off_svc).run()
+    BulkImageImport(grocy_svc, off_svc).run_all()
 
 main.add_command(bulk_image)
