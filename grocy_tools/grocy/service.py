@@ -1,19 +1,17 @@
 import base64
+from abc import ABCMeta
 from io import BytesIO
-from typing import Any, Generator, Iterator
+from typing import Iterator
 
 import httpx
 
 from grocy_rest_api_client import Client
-from abc import ABCMeta
-
 from grocy_rest_api_client.api.files import put_files_group_file_name
+from grocy_rest_api_client.api.generic_entity_interactions import get_objects_entity
 from grocy_rest_api_client.api.generic_entity_interactions import put_objects_entity_object_id
 from grocy_rest_api_client.api.stock import get_stock, get_stock_products_product_id
-from grocy_rest_api_client.api.generic_entity_interactions import get_objects_entity
 from grocy_rest_api_client.models import FileGroups, ExposedEntityNotIncludingNotEditable, Product, Error400, \
-    ProductDetailsResponse, CurrentStockResponse, Battery, Chore, Location, ProductBarcode, QuantityUnit, \
-    ShoppingListItem, StockEntry, ExposedEntityNotIncludingNotListable
+    ProductDetailsResponse, CurrentStockResponse, ExposedEntityNotIncludingNotListable
 from grocy_rest_api_client.types import File
 
 
