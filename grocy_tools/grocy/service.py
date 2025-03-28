@@ -75,3 +75,11 @@ class GrocyService(GrocyServiceInterface):
                 offset += 100
             else:
                 complete = True
+
+    def update_product(self, product: Product) -> Error400 | None:
+        return put_objects_entity_object_id.sync(
+            client=self.client,
+            entity=ExposedEntityNotIncludingNotEditable.PRODUCTS,
+            body=product,
+            object_id=product.id
+        )
