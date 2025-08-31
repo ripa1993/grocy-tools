@@ -23,9 +23,10 @@ def bulk_image(grocy_api_url: str, grocy_api_key: str):
 
 @click.command()
 @common_options
-def sanitize(grocy_api_url: str, grocy_api_key: str):
+@click.option('--dry-run', is_flag=True, default=False)
+def sanitize(grocy_api_url: str, grocy_api_key: str, dry_run: bool):
     grocy_svc = GrocyService(grocy_api_url, grocy_api_key)
-    BulkRenamer(grocy_svc).run_sanitize()
+    BulkRenamer(grocy_svc).run_sanitize(dry_run=dry_run)
 
 main.add_command(bulk_image)
 main.add_command(sanitize)
