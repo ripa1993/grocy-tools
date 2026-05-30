@@ -11,6 +11,7 @@ dependencies = [
     "python-dateutil<3",
     "openfoodfacts<3",
     "click<9",
+    "ddgs>=9.14.3",
 ]
 
 [project.scripts]

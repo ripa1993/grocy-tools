@@ -1,5 +1,6 @@
 import click
 
+from grocy_tools.duckduckgo.service import DuckDuckGoImageService
 from grocy_tools.grocy.service import GrocyService
 from grocy_tools.openfoodfacts.service import OpenFoodFactsService
 from grocy_tools.orchestration.bulk_image_import import BulkImageImport
@@ -19,8 +20,8 @@ def main():
 @common_options
 def bulk_image(grocy_api_url: str, grocy_api_key: str):
     grocy_svc = GrocyService(grocy_api_url, grocy_api_key)
-    off_svc = OpenFoodFactsService()
-    BulkImageImport(grocy_svc, off_svc).run_all()
+    sources = [OpenFoodFactsService(), DuckDuckGoImageService()]
+    BulkImageImport(grocy_svc, sources).run_all()
 
 @click.command()
 @common_options
