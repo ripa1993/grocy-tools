@@ -41,7 +41,7 @@ class GrocyService(GrocyServiceInterface):
         return get_stock_products_product_id.sync(client=self.client, product_id=product_id)
 
     def put_product_image_from_url(self, product_id: int, url: str) -> Error400 | None:
-        image_response = httpx.get(url)
+        image_response = httpx.get(url, timeout=10)
         image_data = BytesIO(image_response.content)
         extension = url.split(".")[-1]
         file_name = f"{product_id}.{extension}"

@@ -1,5 +1,7 @@
 from abc import ABCMeta
 
+import httpx
+
 from grocy_rest_api_client.models import ProductDetailsResponse
 from grocy_tools.grocy.service import GrocyService
 from grocy_tools.image_sources import ImageSourceInterface
@@ -22,7 +24,11 @@ class BulkImageImport(BulkImageImportInterface):
                 for source in self.image_sources:
                     image = source.find_image_url(barcode, name)
                     if image is not None:
-                        res = self.grocy_svc.put_product_image_from_url(product_id, image)
+                        try:
+                            res = self.grocy_svc.put_product_image_from_url(product_id, image)
+                        except httpx.TransportError as e:
+                            print(f"Failed to download image from {image}: {e}")
+                            continue
                         if res is None:
                             print(f"Image found via {type(source).__name__}")
                             return True
@@ -30,7 +36,11 @@ class BulkImageImport(BulkImageImportInterface):
             for source in self.image_sources:
                 image = source.find_image_url(None, name)
                 if image is not None:
-                    res = self.grocy_svc.put_product_image_from_url(product_id, image)
+                    try:
+                        res = self.grocy_svc.put_product_image_from_url(product_id, image)
+                    except httpx.TransportError as e:
+                        print(f"Failed to download image from {image}: {e}")
+                        continue
                     if res is None:
                         print(f"Image found via {type(source).__name__} (name search)")
                         return True
