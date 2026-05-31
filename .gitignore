@@ -294,3 +294,4 @@ poetry.toml
 pyrightconfig.json
 
 # End of https://www.toptal.com/developers/gitignore/api/intellij+all,macos,python
+out
